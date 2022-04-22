@@ -18,19 +18,28 @@ class App extends Component {
       .then((users) => this.setState({ monsters: users }));
   }
 
+  onSearchChange = (e) =>{
+    this.setState({ search: e.target.value })
+  }
+
   render() {
     const { monsters, search } = this.state;
+    const { onSearchChange } = this;
     var filteredmonsters = monsters.filter((monster) => {
       return monster.name.toLowerCase().includes(search.toLowerCase());
     });
+    console.log("app js render")
     return (
       <div className="App">
         <h1>Monster Rolodex</h1>
         <SearchBox
           placeholder="Search monsters"
-          handleChange={(e) => this.setState({ search: e.target.value })}
+          handleChange={onSearchChange}
+          className = "search"
         />
-        <CardList monsters={filteredmonsters} />
+        {
+          monsters.length > 0 ? ( <CardList monsters={filteredmonsters} />): ("loading")
+        }
       </div>
     );
   }
